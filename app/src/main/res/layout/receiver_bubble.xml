@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/chat_bubble_picture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="chathead" />
+
+    <TextView
+        android:id="@+id/chat_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_bubble_receiver"
+        android:text="This is a fookin message"
+        android:padding="10dp"
+        android:layout_toEndOf="@+id/chat_bubble_picture"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/chat_bubble_picture"
+        android:layout_marginLeft="5dp"/>
+
+    
+
+
+</RelativeLayout>
