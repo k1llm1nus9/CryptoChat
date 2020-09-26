@@ -134,6 +134,11 @@ public class MessageActivity extends AppCompatActivity {
 //        hashMap.put("timestamp", date.toString());
 
         reference.child("Chats").push().setValue(hashMap);
+
+
+//        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid()).child(userId);
+
+
     }
 
     private void readMessage(final String myid, final String userId, final String imgURL) {

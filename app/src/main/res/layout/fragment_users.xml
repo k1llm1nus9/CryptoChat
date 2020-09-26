@@ -6,11 +6,23 @@
     tools:context=".Fragments.UsersFragment"
     android:background="@color/colorPrimary">
 
+    <EditText
+        android:id="@+id/searchbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="#fff"
+        android:textColorHint="#7C7C7C"
+        android:hint="@string/search_users"
+        android:textSize="15sp"
+        android:padding="10dp"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchbox"/>
 
 
 </RelativeLayout>

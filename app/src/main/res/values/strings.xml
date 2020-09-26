@@ -15,4 +15,7 @@
     <string name="register">register</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_users">Search Users...</string>
+    <string name="this_is_a_message">This is a message</string>
+    <string name="chathead">chathead</string>
 </resources>
