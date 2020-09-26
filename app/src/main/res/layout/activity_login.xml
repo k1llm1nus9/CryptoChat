@@ -32,7 +32,10 @@
         android:text="@string/login"
         android:textAlignment="center"
         android:textColor="@color/colorLight"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="26dp"
+        android:layout_alignParentLeft="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,8 +73,19 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
             android:text="@string/login"
-            android:textColor="@color/colorLight"
+            android:textColor="#fff"
             android:layout_below="@+id/password"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reset_password"
+            android:text="Forgot Password?"
+            android:textColor="#ccc"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/loginButton"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

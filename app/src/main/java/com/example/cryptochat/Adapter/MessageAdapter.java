@@ -56,6 +56,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.chat_bubble.setText(chat.getMessage());
         holder.chat_bubble_picture.setImageResource(R.mipmap.user);
 //        holder.chat_timestamp.setText(chat.getTimestamp().toString());
+
+        if (position == mChat.size()-1) {
+            if (chat.isSeen()) {
+                holder.isSeen.setText("Seen");
+            } else {
+                holder.isSeen.setText("Delivered");
+            }
+        } else {
+            holder.isSeen.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -68,11 +79,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public ImageView chat_bubble_picture;
 //        public TextView chat_timestamp;
 
+        public TextView isSeen;
+
         public ViewHolder(View itemView) {
             super(itemView);
             chat_bubble = itemView.findViewById(R.id.chat_bubble);
             chat_bubble_picture = itemView.findViewById(R.id.chat_bubble_picture);
 //            chat_timestamp = itemView.findViewById(R.id.timestamp);
+            isSeen = itemView.findViewById(R.id.seen);
         }
     }
 

@@ -35,9 +35,9 @@
             android:layout_alignParentRight="true" />
 
         <TextView
+            android:id="@+id/seen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seen"
             android:layout_below="@+id/chat_bubble"
             android:layout_alignParentEnd="true"
             android:textSize="12sp"

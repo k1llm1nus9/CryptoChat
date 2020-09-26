@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" android:parentActivityName=".LoginActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
