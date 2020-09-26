@@ -2,6 +2,7 @@ package com.example.cryptochat.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.example.cryptochat.MessageActivity;
 import com.example.cryptochat.Model.User;
 import com.example.cryptochat.R;
 import com.example.cryptochat.StartActivity;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import org.w3c.dom.Text;
 
@@ -23,10 +25,12 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
+    private boolean ischat;
 
-    public UserAdapter(Context mContext, List<User>mUsers) {
+    public UserAdapter(Context mContext, List<User>mUsers, boolean ischat) {
         this.mUsers = mUsers;
         this.mContext = mContext;
+        this.ischat = ischat;
     }
 
     @NonNull
@@ -41,6 +45,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         final User user = mUsers.get(position);
         holder.username.setText(user.getUsername());
         holder.profile_picture.setImageResource(R.mipmap.user);
+
+        System.out.println(ischat);
+
+        if (ischat) {
+            if (user.getStatus().equals("online")) {
+                holder.online.setVisibility(View.VISIBLE);
+                holder.offline.setVisibility(View.GONE);
+            } else {
+                holder.online.setVisibility(View.GONE);
+                holder.offline.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.online.setVisibility(View.GONE);
+            holder.offline.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +79,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public ImageView profile_picture;
+        private ImageView online;
+        private ImageView offline;
 
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.list_username);
             profile_picture = itemView.findViewById(R.id.user_list_icon);
+            online = itemView.findViewById(R.id.online_token);
+            offline = itemView.findViewById(R.id.offline_token);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.cryptochat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.media.Image;
@@ -24,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView profile_name;
     ImageView profile_image;
-    Button go_to_main;
+//    Button go_to_main;
 
     FirebaseUser firebaseUser;
     DatabaseReference reference;
@@ -33,6 +34,19 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                finish();
+            }
+        });
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
@@ -54,14 +68,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        go_to_main = findViewById(R.id.go_to_main);
+//        go_to_main = findViewById(R.id.go_to_main);
 
-        go_to_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-            }
-        });
+//        go_to_main.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+//            }
+//        });
 
     }
 }

@@ -23,7 +23,33 @@
         android:text="TextView"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/colorLight"/>
+
+    <ImageView
+        android:id="@+id/online_token"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignBottom="@+id/user_list_icon"
+        android:layout_toEndOf="@+id/user_list_icon"
+        android:layout_toRightOf="@+id/user_list_icon"
+        android:layout_marginLeft="7dp"
+        android:background="@drawable/online_token"
+        android:layout_marginStart="-7dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/offline_token"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignBottom="@+id/user_list_icon"
+        android:layout_toEndOf="@+id/user_list_icon"
+        android:layout_toRightOf="@+id/user_list_icon"
+        android:layout_marginLeft="7dp"
+        android:background="@drawable/offline_token"
+        android:layout_marginStart="-7dp"
+        android:visibility="gone"/>
+
 
 
 </RelativeLayout>

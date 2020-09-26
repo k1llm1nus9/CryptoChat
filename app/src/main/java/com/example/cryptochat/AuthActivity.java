@@ -2,6 +2,7 @@ package com.example.cryptochat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,19 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("CryptoChat - Register");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AuthActivity.this, StartActivity.class));
+                finish();
+            }
+        });
 
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
@@ -85,6 +99,11 @@ public class AuthActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
                                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+
+                                // using flags to control the start and finish of activity
+                                // flags are numbers used to denote how activity will finish....
+                                // TODO: read more about flags
+
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();

@@ -1,12 +1,14 @@
 package com.example.cryptochat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +20,7 @@ import java.util.List;
 public class StartActivity extends AppCompatActivity {
 
     Button login, register;
+    ImageView bat_logo;
     FirebaseUser firebaseUser;
 
     @Override
@@ -39,10 +42,15 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("CryptoChat");
+        setSupportActionBar(toolbar);
+
         login = findViewById(R.id.startLoginButton);
         register = findViewById(R.id.startRegisterButton);
 
-
+        bat_logo = findViewById(R.id.bat_logo);
+        bat_logo.setImageResource(R.mipmap.bat);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,86 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".ProfileActivity"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 
-    <ImageView
-        android:id="@+id/profile_view_pic"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <RelativeLayout
+        android:id="@+id/picarea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/profile_view_pic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/unamearea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/picarea"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/profile_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Username"
+            android:textSize="18sp"
+            android:textColor="@color/colorLight"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textSize="18sp"
+            android:layout_toEndOf="@+id/profile_name_label"
+            android:layout_toRightOf="@+id/profile_name_label"
+            android:textColor="@color/colorLight"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/unamearea"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        >
 
-    <TextView
-        android:id="@+id/profile_email_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="47dp"
-        android:layout_marginLeft="47dp"
-        android:fontFamily="sans-serif-black"
-        android:padding="5dp"
-        android:text="Email Address"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/profile_email_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Email"
+            android:textSize="18sp"
+            android:textColor="@color/colorLight"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
 
-    <TextView
-        android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/profile_email_label"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="69dp"
-        android:layout_marginRight="69dp"
-        android:layout_marginStart="15dp"
-        android:text="name@mail.com"
-        android:textSize="18sp"
-        android:layout_toEndOf="@+id/profile_email_label"
-        android:layout_marginLeft="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="md@mail.com"
+            android:textSize="18sp"
+            android:layout_toEndOf="@+id/profile_email_label"
+            android:layout_toRightOf="@+id/profile_email_label"
+            android:textColor="@color/colorLight"
+            android:layout_centerVertical="true"
+            />
 
-    <TextView
-        android:id="@+id/profile_name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="249dp"
-        android:fontFamily="sans-serif-black"
-        android:padding="5dp"
-        android:text="Username"
-        android:textSize="18sp" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/profile_name_label"
-        android:layout_marginTop="253dp"
-        android:layout_marginEnd="69dp"
-        android:layout_marginRight="69dp"
-        android:layout_marginStart="15dp"
-        android:text="Full Name"
-        android:textSize="18sp"
-        android:layout_toEndOf="@+id/profile_name_label"
-        android:layout_marginLeft="15dp" />
-
-    <Button
-        android:id="@+id/go_to_main"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="201dp"
-        android:text="Go to main activity"
-        android:background="@color/colorAccent"
-        android:textColor="#fff"/>
+<!--    <Button-->
+<!--        android:id="@+id/go_to_main"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginBottom="201dp"-->
+<!--        android:text="Go to main activity"-->
+<!--        android:background="@color/colorAccent"-->
+<!--        android:textColor="#fff"/>-->
 
 
 </RelativeLayout>
