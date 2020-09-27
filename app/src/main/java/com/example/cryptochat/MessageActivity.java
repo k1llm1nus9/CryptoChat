@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptochat.Adapter.MessageAdapter;
+import com.example.cryptochat.Encryption.AESCrypt;
 import com.example.cryptochat.Model.Chat;
 import com.example.cryptochat.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -53,6 +56,8 @@ public class MessageActivity extends AppCompatActivity {
 
 
     ValueEventListener seenListener;
+
+    AESCrypt aes = new AESCrypt("lv39eptlvuhaqqsr");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,10 +178,19 @@ public class MessageActivity extends AppCompatActivity {
 //        final String userid = intent.getStringExtra("userid"); //----> YES
         Date date = new Date();
 
+        String encryptedMessage = null;
+
+        try {
+            encryptedMessage = aes.encrypt(message);
+        } catch (Exception e) {
+//            Logger.getLogger(AESCrypt.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+        }
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
+        hashMap.put("message", encryptedMessage);
 //        hashMap.put("isSeen", false);
 //        hashMap.put("timestamp", date.toString());
 

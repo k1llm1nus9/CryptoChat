@@ -1,6 +1,10 @@
 package com.example.cryptochat.Model;
 
+import com.example.cryptochat.Encryption.AESCrypt;
+
 public class Chat {
+
+    AESCrypt aes = new AESCrypt("lv39eptlvuhaqqsr");
 
     private String sender;
     private String receiver;
@@ -35,7 +39,7 @@ public class Chat {
     }
 
     public String getMessage() {
-        return message;
+        return decryptMessage(message);
     }
 
     public void setMessage(String message) {
@@ -48,5 +52,15 @@ public class Chat {
 
     public void setSeen(boolean seen) {
         isSeen = seen;
+    }
+
+    public String decryptMessage(String msg) {
+        String decryptedMessage = null;
+        try {
+            decryptedMessage = aes.decrypt(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return decryptedMessage;
     }
 }

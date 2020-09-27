@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.example.cryptochat.Encryption.AESCrypt;
 import com.example.cryptochat.Fragments.ChatsFragment;
 import com.example.cryptochat.Fragments.UsersFragment;
 import com.example.cryptochat.Model.User;
