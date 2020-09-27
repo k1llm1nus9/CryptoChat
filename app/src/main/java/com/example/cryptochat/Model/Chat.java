@@ -1,10 +1,10 @@
 package com.example.cryptochat.Model;
 
-import com.example.cryptochat.Encryption.AESCrypt;
+import com.example.cryptochat.Encryption.AESCryptoChat;
 
 public class Chat {
 
-    AESCrypt aes = new AESCrypt("lv39eptlvuhaqqsr");
+    AESCryptoChat aes = new AESCryptoChat("lv39eptlvuhaqqsr");
 
     private String sender;
     private String receiver;

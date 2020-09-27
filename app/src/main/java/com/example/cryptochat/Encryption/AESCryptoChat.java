@@ -10,12 +10,12 @@ import javax.crypto.spec.SecretKeySpec;
 import static com.google.android.gms.common.util.Base64Utils.decode;
 import static com.google.android.gms.common.util.Base64Utils.encode;
 
-public class AESCrypt {
+public class AESCryptoChat {
 
     public static final String ALGORITHM = "AES";
     public byte[] keyValue;
 
-    public AESCrypt(String key) {
+    public AESCryptoChat(String key) {
         keyValue = key.getBytes();
     }
 

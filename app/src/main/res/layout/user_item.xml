@@ -21,10 +21,9 @@
         android:layout_toRightOf="@id/user_list_icon"
         android:layout_toEndOf="@id/user_list_icon"
         android:text="TextView"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:textSize="18sp"
-        android:textColor="@color/colorLight"/>
+        android:textColor="#fff"/>
 
     <ImageView
         android:id="@+id/online_token"
@@ -50,6 +49,17 @@
         android:layout_marginStart="-7dp"
         android:visibility="gone"/>
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/last_message"
+        android:layout_below="@+id/list_username"
+        android:text="Message"
+        android:layout_toRightOf="@+id/user_list_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/user_list_icon"
+        android:layout_marginStart="20dp"
+        android:maxLines="1"
+        android:textColor="@color/colorLight"/>
 
 </RelativeLayout>

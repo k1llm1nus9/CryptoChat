@@ -13,10 +13,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptochat.MessageActivity;
+import com.example.cryptochat.Model.Chat;
 import com.example.cryptochat.Model.User;
 import com.example.cryptochat.R;
 import com.example.cryptochat.StartActivity;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +34,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
     private boolean ischat;
+
+    String lastMesaage;
 
     public UserAdapter(Context mContext, List<User>mUsers, boolean ischat) {
         this.mUsers = mUsers;
@@ -46,7 +56,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.username.setText(user.getUsername());
         holder.profile_picture.setImageResource(R.mipmap.user);
 
-        System.out.println(ischat);
+        System.out.println("========================= Printing ischar from onbindviewholder useradapter =========================== " + ischat);
+
+        if (ischat) {
+            checkLastMessage(user.getId(), holder.last_message);
+        } else {
+            holder.last_message.setVisibility(View.GONE);
+        }
+
+//        holder.last_message.setVisibility(View.GONE);
+
+
 
         if (ischat) {
             if (user.getStatus().equals("online")) {
@@ -81,6 +101,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public ImageView profile_picture;
         private ImageView online;
         private ImageView offline;
+        private  TextView last_message;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +109,55 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             profile_picture = itemView.findViewById(R.id.user_list_icon);
             online = itemView.findViewById(R.id.online_token);
             offline = itemView.findViewById(R.id.offline_token);
+            last_message = itemView.findViewById(R.id.last_message);
         }
+    }
+
+    public void checkLastMessage(final String userid, final TextView last_message) {
+        lastMesaage = "default";
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        System.out.println("================ Printing referene ============== " + reference);
+
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Chat chat = snap.getValue(Chat.class);
+
+                    System.out.println("========================= Printing chat =========================== " + chat);
+
+                    System.out.println("========================= Printing chat.getReceiver =========================== " + chat.getReceiver());
+                    System.out.println("========================= Printing chat.getSender =========================== " + chat.getSender());
+                    System.out.println("========================= Printing Firebaseuser.getuid =========================== " + firebaseUser.getUid());
+                    System.out.println("========================= Printing userid =========================== " + userid);
+
+
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
+                        lastMesaage = chat.getMessage();
+                    }
+                }
+
+                switch (lastMesaage) {
+                    case "default" :
+                        last_message.setText("");
+                        break;
+
+                    default:
+                        last_message.setText(lastMesaage);
+                        break;
+                }
+
+
+                lastMesaage = "default";
+             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
