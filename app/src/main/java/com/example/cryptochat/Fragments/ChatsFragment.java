@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.cryptochat.Adapter.UserAdapter;
 import com.example.cryptochat.Model.Chat;
+import com.example.cryptochat.Model.Chatlist;
 import com.example.cryptochat.Model.User;
 import com.example.cryptochat.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +37,8 @@ public class ChatsFragment extends Fragment {
     FirebaseUser firebaseUser;
     DatabaseReference reference;
 
-    private List<String> usersList;
+    private List<Chatlist> usersList;
+//    private List<String> usersList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,24 +53,16 @@ public class ChatsFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
-                    Chat chat = snap.getValue(Chat.class);
-
-                    if (chat.getSender().equals(firebaseUser.getUid())) {
-                        usersList.add(chat.getReceiver());
-                    }
-
-                    if (chat.getReceiver().equals(firebaseUser.getUid())) {
-                        usersList.add(chat.getSender());
-                    }
+                    Chatlist chatlist = snap.getValue(Chatlist.class);
+                    usersList.add(chatlist);
                 }
-
-                readChats();
+                chatList();
             }
 
             @Override
@@ -76,38 +71,101 @@ public class ChatsFragment extends Fragment {
             }
         });
 
+//        reference = FirebaseDatabase.getInstance().getReference("Chats");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                usersList.clear();
+//                for (DataSnapshot snap : snapshot.getChildren()) {
+//                    Chat chat = snap.getValue(Chat.class);
+//
+//                    if (chat.getSender().equals(firebaseUser.getUid())) {
+//                        usersList.add(chat.getReceiver());
+//                    }
+//
+//                    if (chat.getReceiver().equals(firebaseUser.getUid())) {
+//                        usersList.add(chat.getSender());
+//                    }
+//                }
+//
+//                readChats();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
         return view;
     }
 
 
-    private void readChats() {
+
+
+
+
+
+
+
+//    private void readChats() {
+//        mUsers = new ArrayList<>();
+//        reference = FirebaseDatabase.getInstance().getReference("Users");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                mUsers.clear();
+//
+//                for (DataSnapshot snap : snapshot.getChildren()) {
+//                    User user = snap.getValue(User.class);
+//
+//                    // display the user in Chat Tab
+//
+//                    for (String id : usersList) {
+//                        if (user.getId().equals(id)) {
+//                            if(mUsers.size() != 0) {
+//                                for (User user1 : mUsers) {
+//                                    if(!user.getId().equals(user1.getId())) {
+//                                        mUsers.add(user);
+//                                    }
+//                                }
+//                            } else {
+//                                mUsers.add(user);
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                userAdapter = new UserAdapter(getContext(), mUsers, true);
+//                recyclerView.setAdapter(userAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
+
+
+
+
+
+    private void chatList() {
         mUsers = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUsers.clear();
-                
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     User user = snap.getValue(User.class);
-
-                    // display the user in Chat Tab
-
-                    for (String id : usersList) {
-                        if (user.getId().equals(id)) {
-                            if(mUsers.size() != 0) {
-                                for (User user1 : mUsers) {
-                                    if(!user.getId().equals(user1.getId())) {
-                                        mUsers.add(user);
-                                    }
-                                }
-                            } else {
-                                mUsers.add(user);
-                            }
+                    for (Chatlist chatlist : usersList) {
+                        if (user.getId().equals(chatlist.getId())) {
+                            mUsers.add(user);
                         }
                     }
                 }
-
                 userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
             }
@@ -118,4 +176,5 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
+
 }

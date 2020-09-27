@@ -93,6 +93,11 @@ public class MessageActivity extends AppCompatActivity {
 
         intent = getIntent();
         final String userId = intent.getStringExtra("userId");
+
+
+
+        System.out.println("userid in oncreate - " + userId);
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         send_button.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +164,13 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
-    private void sendMessage(String sender, String receiver, String message) {
+    private void sendMessage(String sender, final String receiver, String message) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
+        final String userId = intent.getStringExtra("userId");
+        System.out.println("========================= GET STRING EXTRA in SENDMESSAGE - " + userId);
+
+//        final String userid = intent.getStringExtra("userid"); //----> YES
         Date date = new Date();
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -173,9 +182,24 @@ public class MessageActivity extends AppCompatActivity {
 
         reference.child("Chats").push().setValue(hashMap);
 
+//        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid()).child(receiver);
+        assert userId != null;
+        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid()).child(userId);
 
-//        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid()).child(userId);
+        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+//                    chatReference.child("id").setValue(receiver);
+                    chatReference.child("id").setValue(userId);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
