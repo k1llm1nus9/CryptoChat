@@ -6,4 +6,5 @@
     <color name="colorLight">#787878</color>
     <color name="colorMedium">#5A5353</color>
     <color name="colorDrawables">#505050</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

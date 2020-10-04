@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.cryptochat.Fragments.ChatsFragment;
 import com.example.cryptochat.Fragments.UsersFragment;
+import com.example.cryptochat.Model.Chat;
 import com.example.cryptochat.Model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,16 +73,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TabLayout tab_layout = findViewById(R.id.tabLayout);
-        ViewPager view_pager = findViewById(R.id.view_pager);
+        final TabLayout tab_layout = findViewById(R.id.tabLayout);
+        final ViewPager view_pager = findViewById(R.id.view_pager);
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
-        viewPagerAdapter.addFragment(new UsersFragment(), "Friends");
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+                int unread = 0;
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Chat chat = snap.getValue(Chat.class);
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && !chat.isSeen()) {
+                        unread++;
+                    }
+                }
 
-        view_pager.setAdapter(viewPagerAdapter);
+                if (unread == 0) {
+                    viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
+                } else {
+                    viewPagerAdapter.addFragment(new ChatsFragment(), "(" + unread + ") Chats");
+                }
 
-        tab_layout.setupWithViewPager(view_pager);
+                viewPagerAdapter.addFragment(new UsersFragment(), "Friends");
+                view_pager.setAdapter(viewPagerAdapter);
+                tab_layout.setupWithViewPager(view_pager);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
+//        viewPagerAdapter.addFragment(new UsersFragment(), "Friends");
+
+//        view_pager.setAdapter(viewPagerAdapter);
+
+//        tab_layout.setupWithViewPager(view_pager);
 
     }
 

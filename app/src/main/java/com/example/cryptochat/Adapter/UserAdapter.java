@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cryptochat.MessageActivity;
 import com.example.cryptochat.Model.Chat;
 import com.example.cryptochat.Model.User;
@@ -54,6 +55,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final User user = mUsers.get(position);
         holder.username.setText(user.getUsername());
+
+        if (user.getImgURL().equals("default")) {
+            holder.profile_picture.setImageResource(R.mipmap.user);
+        } else {
+            Glide.with(mContext).load(user.getImgURL()).into(holder.profile_picture);
+        }
+
         holder.profile_picture.setImageResource(R.mipmap.user);
 
         System.out.println("========================= Printing ischar from onbindviewholder useradapter =========================== " + ischat);
@@ -118,7 +126,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
 
-        System.out.println("================ Printing referene ============== " + reference);
+//        System.out.println("================ Printing referene ============== " + reference);
 
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -127,12 +135,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Chat chat = snap.getValue(Chat.class);
 
-                    System.out.println("========================= Printing chat =========================== " + chat);
-
-                    System.out.println("========================= Printing chat.getReceiver =========================== " + chat.getReceiver());
-                    System.out.println("========================= Printing chat.getSender =========================== " + chat.getSender());
-                    System.out.println("========================= Printing Firebaseuser.getuid =========================== " + firebaseUser.getUid());
-                    System.out.println("========================= Printing userid =========================== " + userid);
+//                    System.out.println("========================= Printing chat =========================== " + chat);
+//
+//                    System.out.println("========================= Printing chat.getReceiver =========================== " + chat.getReceiver());
+//                    System.out.println("========================= Printing chat.getSender =========================== " + chat.getSender());
+//                    System.out.println("========================= Printing Firebaseuser.getuid =========================== " + firebaseUser.getUid());
+//                    System.out.println("========================= Printing userid =========================== " + userid);
 
 
                     if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {

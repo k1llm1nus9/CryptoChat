@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cryptochat.Adapter.MessageAdapter;
 import com.example.cryptochat.Encryption.AESCryptoChat;
 import com.example.cryptochat.Model.Chat;
@@ -122,7 +123,14 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
-                profile_picture.setImageResource(R.mipmap.user);
+
+                if (user.getImgURL().equals("default")) {
+                    profile_picture.setImageResource(R.mipmap.user);
+                } else {
+                    Glide.with(MessageActivity.this).load(user.getImgURL()).into(profile_picture);
+                }
+
+//                profile_picture.setImageResource(R.mipmap.user);
                 readMessage(firebaseUser.getUid(), userId, user.getImgURL());
             }
 
