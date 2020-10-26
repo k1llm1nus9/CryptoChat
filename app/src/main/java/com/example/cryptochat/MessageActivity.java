@@ -19,20 +19,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cryptochat.Adapter.MessageAdapter;
 import com.example.cryptochat.Encryption.AESCryptoChat;
+import com.example.cryptochat.Fragments.APIService;
 import com.example.cryptochat.Model.Chat;
 import com.example.cryptochat.Model.User;
+import com.example.cryptochat.Notifications.Client;
+import com.example.cryptochat.Notifications.Data;
+import com.example.cryptochat.Notifications.MyResponse;
+import com.example.cryptochat.Notifications.Sender;
+import com.example.cryptochat.Notifications.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -55,6 +66,11 @@ public class MessageActivity extends AppCompatActivity {
 
     ValueEventListener seenListener;
 
+
+    APIService apiService;
+
+    boolean notify = false;
+
     AESCryptoChat aes = new AESCryptoChat("lv39eptlvuhaqqsr");
 
     @Override
@@ -74,6 +90,10 @@ public class MessageActivity extends AppCompatActivity {
                 startActivity(new Intent(MessageActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
+
+
+        apiService = Client.getClient("https:/fcm.googleapis.com/").create(APIService.class);
+
 
         recyclerView = findViewById(R.id.msg_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -106,6 +126,9 @@ public class MessageActivity extends AppCompatActivity {
         send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                notify = true;
+
                 String msg = message.getText().toString();
                 if(!msg.equals("")) {
                     sendMessage(firebaseUser.getUid(), userId, msg);
@@ -220,7 +243,72 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+
+        final String msg = message;
+
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+
+                if (notify) {
+                    sendNotification(receiver, user.getUsername(), msg);
+                }
+
+                notify = false;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
+
+
+
+    private void sendNotification(String receiver, final String username, String msg) {
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+
+        final String userId = intent.getStringExtra("userId");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    Token token = snap.getValue(Token.class);
+                    Data data = new Data(firebaseUser.getUid(), R.mipmap.logo, username + ": " + message, "New Encrypted Message", userId);
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
+                        @Override
+                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                            if (response.code() == 200) {
+                                if (response.body().success != 1) {
+                                    Toast.makeText(MessageActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
     private void readMessage(final String myid, final String userId, final String imgURL) {
         mChat = new ArrayList<>();
